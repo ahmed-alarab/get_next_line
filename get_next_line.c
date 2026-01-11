@@ -6,14 +6,12 @@
 /*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/04 14:57:48 by ahmad             #+#    #+#             */
-/*   Updated: 2026/01/11 20:13:18 by ahmad            ###   ########.fr       */
+/*   Updated: 2026/01/11 20:45:48 by ahmad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "unistd.h"
 #include "get_next_line.h"
-
-static char *stash;
 
 char *read_to_stash(int fd, char *stash)
 {
@@ -33,7 +31,7 @@ char *read_to_stash(int fd, char *stash)
             return NULL;
         }
         bf[read_bytes] = '\0';
-        stash = str_join(stash, bf);
+        stash = ft_strjoin(stash, bf);
     }
     free(bf);
     return stash;
@@ -57,7 +55,10 @@ char *get_the_line(char *line)
         count++;
     }
     if (line[count] == '\n')
-        new_line[count] = line[count++];
+    {
+        new_line[count] = line[count];
+        count++;
+    }
     new_line[count] = '\0';
     return new_line;
 }
@@ -65,26 +66,28 @@ char *get_the_line(char *line)
 char *update_stash(char *stash)
 {
     int i;
+    int j;
     char *new_stash;
 
     i = 0;
-    while (stash[i] != '\n')
-    {
-        if (stash[i] == '\0' || ((stash[i + 1] == '\n') && (stash[i + 2] == '\0')))
-        {
-            free(stash);
-            return NULL;
-        }
+    j = 0;
+    if (!stash)
+        return NULL;
+    while (stash[i] && stash[i] != '\n')
         i++;
-    }
-    new_stash = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
-    while (stash[i] != '\0')
+    if (!stash[i])
     {
-        new_stash[i] = stash[i];
-        i++;
+        free(stash);
+        return NULL;
     }
+    i++;
+    new_stash = malloc(sizeof(char) * (ft_strlen(stash + i) + 1));
+    if (!new_stash)
+        return NULL;
+    while (stash[i])
+        new_stash[j++] = stash[i++];
+    new_stash[j] = '\0';
     free(stash);
-    new_stash[i] = '\0';
     return new_stash;
 }
 

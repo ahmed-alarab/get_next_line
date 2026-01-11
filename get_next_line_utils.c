@@ -6,7 +6,7 @@
 /*   By: ahmad <ahmad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/07 15:30:16 by ahmad             #+#    #+#             */
-/*   Updated: 2026/01/11 19:20:53 by ahmad            ###   ########.fr       */
+/*   Updated: 2026/01/11 20:34:19 by ahmad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t ft_strlen(char *str)
     return i;
 }
 
-char *str_join(char *s1, char *s2)
+char *ft_strjoin(char *s1, char *s2)
 {
     char *join;
     int i;
@@ -34,33 +34,52 @@ char *str_join(char *s1, char *s2)
         return NULL;
     if (!s1)
     {
-        join = malloc(sizeof(char) * (str_len(s2) + 1));
+        join = malloc(sizeof(char) * (ft_strlen(s2) + 1));
+        if (join == NULL)
+            return NULL;
         while (s2[i])
-            join[i] = s2[i++];
+        {
+            join[i] = s2[i];
+            i++;
+        }
         join[i] = '\0';
         return join;
     }
     if (!s2)
     {
-        join = malloc(sizeof(char) * (str_len(s1) + 1));
+        join = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+        if (join == NULL)
+            return NULL;
         while (s1[i])
-            join[i] = s1[i++];
+        {
+            join[i] = s1[i];
+            i++;
+        }
         join[i] = '\0';
         free(s1);
         return join;
     }
-    join = malloc(sizeof(char) * (str_len(s1) + str_len(s2) + 1));
+    join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+    if (join == NULL)
+        return NULL;
     while (s1[i])
-        join[i] = s1[i++];
+    {
+        join[i] = s1[i];
+        i++;
+    }
     while (s2[j])
-        join[i++] = s2[j++];
+    {
+        join[i] = s2[j];
+        i++;
+        j++;
+    }
 
     join[i] = '\0';
     free(s1);
     return (join);
 }
 
-char* ft_strchr(char *str, char c)
+char *ft_strchr(char *str, char c)
 {
     int i;
 
